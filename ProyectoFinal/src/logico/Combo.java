@@ -59,5 +59,14 @@ public class Combo {
 		this.descuento = descuento;
 	}
 	
+	public float precio() 
+	{
+		float total = 0;
+		for (Componente c : componentes)
+		{
+			total += c.getPrecio();
+		}
+		return total - (total * ((float)descuento/100) );
+	}
 	
 }
