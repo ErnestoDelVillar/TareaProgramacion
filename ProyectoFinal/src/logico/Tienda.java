@@ -1,94 +1,164 @@
 package logico;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tienda {
+public class Tienda implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<Cliente> misClientes;
-	private ArrayList<Componente> misComp;
-	private ArrayList<Factura> misFacturas;
-	private ArrayList<Combo> misCombos;
-	private String codCliente;
-	private String codComp;
-	private String codFactura;
-	private String codCombo;
+	private ArrayList<Usuario> usuarios;
+	private ArrayList<Componente> inventario;
+	private ArrayList<Factura> facturas;
+	private ArrayList<Cliente> clientes;
+	private ArrayList<Suministrador> suministradores;
+	private ArrayList<OrdenCompra> ordenesCompra;
+	private ArrayList<Combo> combos;
 	
-	public Tienda(ArrayList<Cliente> misClientes, ArrayList<Componente> misComp, ArrayList<Factura> misFacturas,
-			ArrayList<Combo> misCombos, String codCliente, String codComp, String codFactura, String codCombo) {
-		super();
-		this.misClientes = misClientes;
-		this.misComp = misComp;
-		this.misFacturas = misFacturas;
-		this.misCombos = misCombos;
-		this.codCliente = codCliente;
-		this.codComp = codComp;
-		this.codFactura = codFactura;
-		this.codCombo = codCombo;
+	private int codUsuario;
+	private int codComponente;
+	private int codCombo;
+	private int codFactura;
+	private int codOrden;
+	private int codSumi;
+	
+	private static Usuario loginUser;
+	private static Tienda shop = null;
+		
+	private Tienda() {
+		this.usuarios = new ArrayList<Usuario>();
+		this.inventario = new ArrayList<Componente>();
+		this.facturas = new ArrayList<Factura>();
+		this.clientes = new ArrayList<Cliente>();
+		this.suministradores = new ArrayList<Suministrador>();
+		this.ordenesCompra = new ArrayList<OrdenCompra>();
+		this.combos=new ArrayList<Combo>();
+	}
+	
+	public static Tienda getInstance() {
+		if (shop == null) {
+			shop = new Tienda();
+		}
+		return shop;
 	}
 
-	public ArrayList<Cliente> getMisClientes() {
-		return misClientes;
+	public ArrayList<Usuario> getUsuarios() {
+		return usuarios;
 	}
 
-	public void setMisClientes(ArrayList<Cliente> misClientes) {
-		this.misClientes = misClientes;
+	public void setUsuarios(ArrayList<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 
-	public ArrayList<Componente> getMisComp() {
-		return misComp;
+	public ArrayList<Componente> getInventario() {
+		return inventario;
 	}
 
-	public void setMisComp(ArrayList<Componente> misComp) {
-		this.misComp = misComp;
+	public void setInventario(ArrayList<Componente> inventario) {
+		this.inventario = inventario;
 	}
 
-	public ArrayList<Factura> getMisFacturas() {
-		return misFacturas;
+	public ArrayList<Factura> getFacturas() {
+		return facturas;
 	}
 
-	public void setMisFacturas(ArrayList<Factura> misFacturas) {
-		this.misFacturas = misFacturas;
+	public void setFacturas(ArrayList<Factura> facturas) {
+		this.facturas = facturas;
 	}
 
-	public ArrayList<Combo> getMisCombos() {
-		return misCombos;
+	public ArrayList<Cliente> getClientes() {
+		return clientes;
 	}
 
-	public void setMisCombos(ArrayList<Combo> misCombos) {
-		this.misCombos = misCombos;
+	public void setClientes(ArrayList<Cliente> clientes) {
+		this.clientes = clientes;
 	}
 
-	public String getCodCliente() {
-		return codCliente;
+	public ArrayList<Suministrador> getSuministradores() {
+		return suministradores;
 	}
 
-	public void setCodCliente(String codCliente) {
-		this.codCliente = codCliente;
+	public void setSuministradores(ArrayList<Suministrador> suministradores) {
+		this.suministradores = suministradores;
 	}
 
-	public String getCodComp() {
-		return codComp;
+	public ArrayList<OrdenCompra> getOrdenesCompra() {
+		return ordenesCompra;
 	}
 
-	public void setCodComp(String codComp) {
-		this.codComp = codComp;
+	public void setOrdenesCompra(ArrayList<OrdenCompra> ordenesCompra) {
+		this.ordenesCompra = ordenesCompra;
+	}
+	
+	public ArrayList<Combo> getCombos() {
+		return combos;
 	}
 
-	public String getCodFactura() {
-		return codFactura;
+	public void setCombos(ArrayList<Combo> combos) {
+		this.combos = combos;
 	}
 
-	public void setCodFactura(String codFactura) {
-		this.codFactura = codFactura;
+	public static Usuario getLoginUser() {
+		return loginUser;
 	}
 
-	public String getCodCombo() {
-		return codCombo;
+	public static void setLoginUser(Usuario loginUser) {
+		Tienda.loginUser = loginUser;
 	}
 
-	public void setCodCombo(String codCombo) {
-		this.codCombo = codCombo;
+	public static Tienda getTienda() {
+		return shop;
 	}
+
+	public static void setTienda(Tienda tienda) {
+		Tienda.shop = tienda;
+	}
+	
+	
+	public float montoTotalFactura(String codFactura) {
+		Factura factura = buscarFacturaById(codFactura);
+		if (factura != null) {
+			return factura.precioTotal();
+		} else {
+			return -1;
+		}
+	}
+	
+	
+	public Factura buscarFacturaById(String codFactura) {
+		
+		for(Factura f:facturas) {
+			if(f.getId().equalsIgnoreCase(codFactura)) {
+				return f;
+			}
+		}
+		return null;
+	}
+	
+	
+	public Componente buscarComponenteById(String id) {
+		
+		for(Componente c : inventario) {
+			if(c.getId().equalsIgnoreCase(id)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	
+	public Cliente buscarClienteByCedula(String cedula) {
+		
+		for(Cliente c : clientes) {
+			if(c.getCedula().equalsIgnoreCase(cedula)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	
+	
 	
 	
 }
