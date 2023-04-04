@@ -3,19 +3,18 @@ package logico;
 import java.util.ArrayList;
 
 public class MotherBoard extends Componente {
-	
 	private String modelo;
 	private String tipoSocket;
 	private String tipoRam;
-	private ArrayList<String> compatible;
+	private ArrayList<String> conexionesCompatibles;
 	
 	public MotherBoard(String id, String marca, String serial, float precio, int cantMin, int cantMax, int cantReal,
-			String modelo, String tipoSocket, String tipoRam, ArrayList<String> compatible) {
+			String modelo, String tipoSocket, String tipoRam, ArrayList<String> conexionesCompatibles) {
 		super(id, marca, serial, precio, cantMin, cantMax, cantReal);
 		this.modelo = modelo;
 		this.tipoSocket = tipoSocket;
 		this.tipoRam = tipoRam;
-		this.compatible = compatible;
+		this.conexionesCompatibles = conexionesCompatibles;
 	}
 
 	public String getModelo() {
@@ -42,13 +41,51 @@ public class MotherBoard extends Componente {
 		this.tipoRam = tipoRam;
 	}
 
-	public ArrayList<String> getCompatible() {
-		return compatible;
+	public ArrayList<String> getConexionesCompatibles() {
+		return conexionesCompatibles;
 	}
 
-	public void setCompatible(ArrayList<String> compatible) {
-		this.compatible = compatible;
+	public void setConexionesCompatibles(ArrayList<String> conexionesCompatibles) {
+		this.conexionesCompatibles = conexionesCompatibles;
 	}
 	
-	
+	public boolean compatibilidadConBoard(Componente comp) 
+	{
+		
+		if(comp instanceof Ram) 
+		{
+			if(tipoRam.equalsIgnoreCase(((Ram) comp).getTipoMemoria())) 
+			{
+				return true;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		
+		if(comp instanceof MicroProcesador) 
+		{
+			if(tipoSocket.equalsIgnoreCase(((MicroProcesador) comp).getTipoSocket())) 
+			{
+				return true;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		
+		if(comp instanceof DiscoDuro) 
+		{
+			for(String con:conexionesCompatibles) 
+			{
+				if(con.equalsIgnoreCase(((DiscoDuro) comp).getTipoConexion())) 
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
