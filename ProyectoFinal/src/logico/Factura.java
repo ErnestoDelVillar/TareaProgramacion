@@ -80,5 +80,71 @@ public class Factura {
 		VCOmbo = vCOmbo;
 	}
 	
-	
+	public String generarTextoDeVenta() 
+	{
+    		String texto = generarTextoDeCabecera();
+    		texto += generarTextoDeComponentes();
+    		texto += generarTextoDeCombos();
+   		texto += "\nTotal: $" + precioTotal();
+   		return texto;
+	}
+
+	private String generarTextoDeCabecera() 
+	{
+    		DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+    		String strFecha = formatoFecha.format(fecha);
+    		String texto = "ID: " + id + "\n";
+    		texto += "Fecha: " + strFecha + "\n";
+    		texto += "Cliente: " + cliente.getNombre() + "\n";
+    		texto += "Vendedor: " + vendedor.getNombre() + "\n";
+    		return texto;
+	}
+
+	private String generarTextoDeComponentes() 
+	{
+    		String texto = "\nComponentes: \n";
+    		texto += "\tID Componente     Tipo           Precio\n";
+    		for (Componente componente : venta) 
+		{
+        		String tipo = obtenerTipoDeComponente(componente);
+        		texto += String.format("\t %-18s%-15s%-10.4f\n", componente.getId(), tipo, componente.getPrecio());
+    		}
+    		return texto;
+	}
+
+	private String obtenerTipoDeComponente(Componente componente) 
+	{
+    		if (componente instanceof Ram) 
+		{
+        		return "RAM";
+    		} 
+		else if (componente instanceof MotherBoard) 
+		{
+        		return "MotherBoard";
+    		} 
+		else if (componente instanceof MicroProcesador) 
+		{
+        		return "Micro";
+    		} 
+		else if (componente instanceof DiscoDuro) 
+		{
+        		return "Disco Duro";
+    		} 
+		else 
+		{
+        		return "";
+    		}
+	}
+
+	private String generarTextoDeCombos() 
+	{
+		String texto = "\nCombos: \n";
+    		texto += "\tID Combo          Descuento      Precio\n";
+    	
+		for (Combo combo : ventaCombos) 
+		{
+        		texto += String.format("\t %-18s%-12d   %-10.4f\n", combo.getId(), combo.getDescuento(), combo.precio());
+    		}
+    		return texto;
+	}
 }
