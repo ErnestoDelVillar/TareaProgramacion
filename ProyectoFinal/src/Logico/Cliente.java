@@ -1,4 +1,4 @@
-package logico;
+package Logico;
 
 public class Cliente {
 	
@@ -8,8 +8,6 @@ public class Cliente {
 	private String telefono;
 	private float credito;
 	private float creditoEnUso;
-	private static final long serialVersionUID = 1L;
-	
 	public Cliente(String cedula, String nombre, String direccion, String telefono, float credito, float creditoEnUso) {
 		super();
 		this.cedula = cedula;

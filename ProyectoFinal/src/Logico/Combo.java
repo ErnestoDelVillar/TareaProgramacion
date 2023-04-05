@@ -1,16 +1,16 @@
-package logico;
+package Logico;
 
 import java.util.ArrayList;
 
 public class Combo {
 	
-	private String codigo;
+	static int codigo;
 	private String id;
 	private String nombre;
 	private ArrayList<Componente> misComponentes;
 	private int descuento;
 	
-	public Combo(String codigo, String id, String nombre, ArrayList<Componente> misComponentes, int descuento) {
+	public Combo(int codigo, String id, String nombre, ArrayList<Componente> misComponentes, int descuento) {
 		super();
 		this.codigo = codigo;
 		this.id = id;
@@ -19,11 +19,11 @@ public class Combo {
 		this.descuento = descuento;
 	}
 
-	public String getCodigo() {
+	public int getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo) {
+	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}
 
@@ -62,7 +62,7 @@ public class Combo {
 	public float precio() 
 	{
 		float total = 0;
-		for (Componente c : componentes)
+		for (Componente c : misComponentes)
 		{
 			total += c.getPrecio();
 		}
