@@ -20,7 +20,7 @@ public class Tienda implements Serializable{
 	private int codCombo;
 	private int codFactura;
 	private int codOrden;
-	private int codSumi;
+	public int codSumi = 1;
 	
 	private static Usuario loginUser;
 	private static Tienda shop = null;
@@ -280,6 +280,7 @@ public class Tienda implements Serializable{
 	
 	public void insertarSuministrador(Suministrador nuevoSuministrador) {
 		suministradores.add(nuevoSuministrador);
+		codSumi++;
 	}
 	
 	public void otorgarCredito(float monto,Cliente cliente) {
@@ -441,7 +442,7 @@ public class Tienda implements Serializable{
 		codCombo = Combo.codigo;
 		codFactura = Factura.cod;
 		codOrden = Compra.cod;
-		codSumi = Suministrador.cod;
+		//codSumi = Suministrador.cod;
 	}
 
 	public void loadCodigos() {
@@ -450,7 +451,7 @@ public class Tienda implements Serializable{
 		Combo.codigo = codCombo;
 		Factura.cod = codFactura;
 		Compra.cod = codOrden;
-		Suministrador.cod = codSumi;
+		//Suministrador.cod = codSumi;
 	}
 
 	public boolean checkCredito(Cliente c, float monto) {

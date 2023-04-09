@@ -13,7 +13,7 @@ public class Suministrador implements Serializable{
 	private String pais;
 	private int entrega;
 	private ArrayList<Componente> componentes;
-	public static int cod=1;
+	
 	
 	public Suministrador(String id, String nombre, String pais, int entrega) {
 		super();
@@ -22,7 +22,7 @@ public class Suministrador implements Serializable{
 		this.pais = pais;
 		this.entrega = entrega;
 		this.componentes = new ArrayList<Componente>();
-		cod++;
+		//cod++;
 	}
 
 	public String getId() {
@@ -65,12 +65,12 @@ public class Suministrador implements Serializable{
 		this.componentes = comps;
 	}
 
-	public static int getCod() {
-		return cod;
-	}
+//	public static int getCod() {
+//		return cod;
+//	}
 
-	public static void setCod(int cod) {
-		Suministrador.cod = cod;
-	}
+//	public static void setCod(int cod) {
+//		Suministrador.cod = cod;
+//	}
 	
 }
