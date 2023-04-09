@@ -2,6 +2,8 @@ package Visual;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -11,6 +13,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 
+import Logico.Componente;
+import Logico.DiscoDuro;
+import Logico.MemoriaRam;
+import Logico.Micro;
+import Logico.MotherBoard;
+import Logico.Suministrador;
 import Logico.Tienda;
 
 import javax.swing.UIManager;
@@ -22,10 +30,12 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SpinnerNumberModel;
 
 public class AgregarSuminstrador extends JDialog {
 
@@ -36,7 +46,6 @@ public class AgregarSuminstrador extends JDialog {
 	private JTextField tF_Pais;
 	private JTextField tF_IdComponente;
 	private JTextField tF_Marca;
-	private JTextField tF_Serial;
 	private JRadioButton rdbtnTarjetaMadre;
 	private JRadioButton rdbtnMicroprocesador;
 	private JRadioButton rdbtnMemoriaRam;
@@ -44,15 +53,35 @@ public class AgregarSuminstrador extends JDialog {
 	private JPanel panelTargetaMadre;
 	private JPanel panelMicroprocesadores;
 	private JPanel panelMemoriRam;
+	private JPanel panelDiscoDuro;
+	private JPanel panel_ComponentesDelSumi;
 	private JList<String> list_Conexiones;
 	private JList<String> list_Compatibles;
-
+	private JList<String> list_Suministros;
+	private JSpinner spinner_Precio;
+	private JSpinner spinner_CantidadMinima;
+	private JSpinner spinner_CantidaMaxima;
+	private JComboBox cbxTipoSocketMicro;
+	private JSpinner spinnerVelocidadMicro;
+	private JComboBox cbx_CantidadMemoriaRam;
+	private JComboBox cbx_TipoRam;
+	private JComboBox cbxTipoSocket;
+	private JComboBox cbx_RamComp;
+	private JSpinner spinner_CantExactaRam;
+	private JComboBox cbx_TipoConexionDD;
+	private JSpinner spinner_Capacidad_DD;
+	private Suministrador sumi = new Suministrador("", "", "", 0);
+	
+	private int codigo = 1;
+	private int codigoComp = 1;
 
 	private DefaultListModel<String> conexionesDD = new DefaultListModel<String>();
 	private DefaultListModel<String> conexionesDD_Compatibles = new DefaultListModel<String>();
-
-	private JTextField tF_Modelo;
-	private JTextField textField_1;
+	private DefaultListModel<String> suministros = new DefaultListModel<String>();
+	
+	private JTextField tF_ModeloTM;
+	private JTextField tf_ModeloMicro;
+	private JTextField tf_ModeloDD;
 	/**
 	 * Launch the application.
 	 */
@@ -70,7 +99,7 @@ public class AgregarSuminstrador extends JDialog {
 	 * Create the dialog.
 	 */
 	public AgregarSuminstrador() {
-		setBounds(100, 100, 1014, 707);
+		setBounds(100, 100, 614, 633);
 		getContentPane().setLayout(new BorderLayout());
 		Panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(Panel, BorderLayout.CENTER);
@@ -153,15 +182,15 @@ public class AgregarSuminstrador extends JDialog {
 			panel.add(tF_Pais);
 		}
 		{
-			JPanel panel = new JPanel();
-			panel.setLayout(null);
-			panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(10, 169, 404, 209);
-			Panel.add(panel);
+			panel_ComponentesDelSumi = new JPanel();
+			panel_ComponentesDelSumi.setLayout(null);
+			panel_ComponentesDelSumi.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel_ComponentesDelSumi.setBounds(10, 169, 559, 140);
+			Panel.add(panel_ComponentesDelSumi);
 			{
 				JLabel lblIdComponente = new JLabel("Id componente:");
 				lblIdComponente.setBounds(10, 8, 91, 14);
-				panel.add(lblIdComponente);
+				panel_ComponentesDelSumi.add(lblIdComponente);
 			}
 			{
 				tF_IdComponente = new JTextField();
@@ -169,42 +198,31 @@ public class AgregarSuminstrador extends JDialog {
 				tF_IdComponente.setEditable(false);
 				tF_IdComponente.setColumns(10);
 				tF_IdComponente.setBounds(10, 22, 378, 20);
-				panel.add(tF_IdComponente);
+				panel_ComponentesDelSumi.add(tF_IdComponente);
 			}
 			{
 				JLabel lblMarca = new JLabel("Marca:");
 				lblMarca.setBounds(10, 53, 64, 14);
-				panel.add(lblMarca);
+				panel_ComponentesDelSumi.add(lblMarca);
 			}
 			{
 				tF_Marca = new JTextField();
 				tF_Marca.setColumns(10);
 				tF_Marca.setBounds(10, 78, 184, 20);
-				panel.add(tF_Marca);
-			}
-			{
-				JLabel lblSerial = new JLabel("Serial:");
-				lblSerial.setBounds(204, 53, 64, 14);
-				panel.add(lblSerial);
-			}
-			{
-				tF_Serial = new JTextField();
-				tF_Serial.setText("-1");
-				tF_Serial.setColumns(10);
-				tF_Serial.setBounds(204, 78, 184, 20);
-				panel.add(tF_Serial);
+				panel_ComponentesDelSumi.add(tF_Marca);
 			}
 			{
 				JLabel lblPrecio = new JLabel("Precio:");
-				lblPrecio.setBounds(10, 109, 64, 14);
-				panel.add(lblPrecio);
+				lblPrecio.setBounds(207, 53, 64, 14);
+				panel_ComponentesDelSumi.add(lblPrecio);
 			}
 
-			JSpinner spinner = new JSpinner();
-			spinner.setBounds(10, 134, 184, 20);
-			panel.add(spinner);
+			spinner_Precio = new JSpinner();
+			spinner_Precio.setBounds(204, 78, 184, 20);
+			panel_ComponentesDelSumi.add(spinner_Precio);
 
 			rdbtnTarjetaMadre = new JRadioButton("Tarjeta Madre");
+			rdbtnTarjetaMadre.setSelected(true);
 			rdbtnTarjetaMadre.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
@@ -212,15 +230,16 @@ public class AgregarSuminstrador extends JDialog {
 					rdbtnMemoriaRam.setSelected(false);
 					rdbtnMicroprocesador.setSelected(false);
 					rdbtnTarjetaMadre.setSelected(true);
-
+					
 					panelMicroprocesadores.setVisible(false);
 					panelMemoriRam.setVisible(false);
+					panelDiscoDuro.setVisible(false);
 					panelTargetaMadre.setVisible(true);
+					updateCodigo();
 				}
 			});
-			rdbtnTarjetaMadre.setSelected(true);
-			rdbtnTarjetaMadre.setBounds(6, 179, 105, 23);
-			panel.add(rdbtnTarjetaMadre);
+			rdbtnTarjetaMadre.setBounds(10, 105, 105, 23);
+			panel_ComponentesDelSumi.add(rdbtnTarjetaMadre);
 
 			rdbtnMicroprocesador = new JRadioButton("Microprocesador");
 			rdbtnMicroprocesador.addActionListener(new ActionListener() {
@@ -229,16 +248,16 @@ public class AgregarSuminstrador extends JDialog {
 					rdbtnMemoriaRam.setSelected(false);
 					rdbtnMicroprocesador.setSelected(true);
 					rdbtnTarjetaMadre.setSelected(false);
-
+					
 					panelMicroprocesadores.setVisible(true);
-					lista_Conexiones();
-
-					panelTargetaMadre.setVisible(false);
 					panelMemoriRam.setVisible(false);
+					panelDiscoDuro.setVisible(false);
+					panelTargetaMadre.setVisible(false);
+					updateCodigo();
 				}
 			});
-			rdbtnMicroprocesador.setBounds(113, 179, 105, 23);
-			panel.add(rdbtnMicroprocesador);
+			rdbtnMicroprocesador.setBounds(113, 105, 105, 23);
+			panel_ComponentesDelSumi.add(rdbtnMicroprocesador);
 
 			rdbtnMemoriaRam = new JRadioButton("Memoria RAM");
 			rdbtnMemoriaRam.addActionListener(new ActionListener() {
@@ -247,22 +266,54 @@ public class AgregarSuminstrador extends JDialog {
 					rdbtnMemoriaRam.setSelected(true);
 					rdbtnMicroprocesador.setSelected(false);
 					rdbtnTarjetaMadre.setSelected(false);
-
+					
 					panelMicroprocesadores.setVisible(false);
 					panelMemoriRam.setVisible(true);
+					panelDiscoDuro.setVisible(false);
 					panelTargetaMadre.setVisible(false);
+					updateCodigo();
 				}
 			});
-			rdbtnMemoriaRam.setBounds(220, 179, 91, 23);
-			panel.add(rdbtnMemoriaRam);
+			rdbtnMemoriaRam.setBounds(214, 105, 91, 23);
+			panel_ComponentesDelSumi.add(rdbtnMemoriaRam);
 
 			rdbtnDiscoDuro = new JRadioButton("Disco Duro");
-			rdbtnDiscoDuro.setBounds(315, 179, 83, 23);
-			panel.add(rdbtnDiscoDuro);
+			rdbtnDiscoDuro.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					rdbtnDiscoDuro.setSelected(true);
+					rdbtnMemoriaRam.setSelected(false);
+					rdbtnMicroprocesador.setSelected(false);
+					rdbtnTarjetaMadre.setSelected(false);
+					
+					panelMicroprocesadores.setVisible(false);
+					panelMemoriRam.setVisible(false);
+					panelDiscoDuro.setVisible(true);
+					panelTargetaMadre.setVisible(false);
+					updateCodigo();
+				}
+			});
+			rdbtnDiscoDuro.setBounds(307, 105, 83, 23);
+			panel_ComponentesDelSumi.add(rdbtnDiscoDuro);
+			
+			JLabel lblCantidadMinima = new JLabel("Cantidad Minima:");
+			lblCantidadMinima.setBounds(398, 8, 105, 14);
+			panel_ComponentesDelSumi.add(lblCantidadMinima);
+			
+			spinner_CantidadMinima = new JSpinner();
+			spinner_CantidadMinima.setBounds(398, 22, 64, 20);
+			panel_ComponentesDelSumi.add(spinner_CantidadMinima);
+			
+			JLabel lblCantidadMaxima = new JLabel("Cantidad Maxima:");
+			lblCantidadMaxima.setBounds(398, 53, 105, 14);
+			panel_ComponentesDelSumi.add(lblCantidadMaxima);
+			
+			spinner_CantidaMaxima = new JSpinner();
+			spinner_CantidaMaxima.setBounds(398, 78, 64, 20);
+			panel_ComponentesDelSumi.add(spinner_CantidaMaxima);
 		}
 		{
 			JLabel lblComponentesDelSuministrador = new JLabel("Componentes del Suministrador:");
-			lblComponentesDelSuministrador.setBounds(10, 155, 174, 14);
+			lblComponentesDelSuministrador.setBounds(10, 155, 185, 14);
 			Panel.add(lblComponentesDelSuministrador);
 		}
 		{
@@ -273,11 +324,11 @@ public class AgregarSuminstrador extends JDialog {
 
 		panelTargetaMadre = new JPanel();
 		panelTargetaMadre.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelTargetaMadre.setBounds(10, 385, 404, 209);
+		panelTargetaMadre.setBounds(10, 330, 404, 209);
 		Panel.add(panelTargetaMadre);
 		panelTargetaMadre.setLayout(null);
 
-		JComboBox cbxTipoSocket = new JComboBox();
+		cbxTipoSocket = new JComboBox();
 		cbxTipoSocket.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "PGA", "BGA", "LGA"}));
 		cbxTipoSocket.setBounds(10, 36, 187, 20);
 		panelTargetaMadre.add(cbxTipoSocket);
@@ -290,10 +341,10 @@ public class AgregarSuminstrador extends JDialog {
 		lblRamCompatible.setBounds(207, 11, 83, 14);
 		panelTargetaMadre.add(lblRamCompatible);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "SRAM", "DRAM"}));
-		comboBox.setBounds(207, 36, 187, 20);
-		panelTargetaMadre.add(comboBox);
+		cbx_RamComp = new JComboBox();
+		cbx_RamComp.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "SRAM", "DRAM"}));
+		cbx_RamComp.setBounds(207, 36, 187, 20);
+		panelTargetaMadre.add(cbx_RamComp);
 		{
 			JPanel panel_1 = new JPanel();
 			panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -366,16 +417,44 @@ public class AgregarSuminstrador extends JDialog {
 		lblModelo.setBounds(246, 67, 64, 14);
 		panelTargetaMadre.add(lblModelo);
 
-		tF_Modelo = new JTextField();
-		tF_Modelo.setBounds(244, 88, 150, 20);
-		panelTargetaMadre.add(tF_Modelo);
-		tF_Modelo.setColumns(10);
+		tF_ModeloTM = new JTextField();
+		tF_ModeloTM.setBounds(244, 88, 150, 20);
+		panelTargetaMadre.add(tF_ModeloTM);
+		tF_ModeloTM.setColumns(10);
+		
+		JButton button_Agregar_TM = new JButton("Agregar Suministro");
+		button_Agregar_TM.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Componente aux = null;
+				ArrayList<String> cc = new ArrayList<String>();
+				cc.add(list_Compatibles.toString());
+				
+				float precio = Float.valueOf(spinner_Precio.getValue().toString());
+				int cantMin = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMax = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				
+				aux = new MotherBoard(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax , 0, tF_ModeloTM.getText(), cbxTipoSocket.getSelectedItem().toString(), cbx_RamComp.getSelectedItem().toString(), cc);
+				
+				sumi.getComponentes().add(aux);
+				suministros.removeAllElements();
+				cargarSuministros();
+				list_Suministros.setModel(suministros);
+				codigoComp++;
+				updateCodigo();
+				cleanComponentes();
+				
+			}
+		});
+		button_Agregar_TM.setActionCommand("OK");
+		button_Agregar_TM.setBounds(244, 136, 150, 23);
+		panelTargetaMadre.add(button_Agregar_TM);
 
 		panelMicroprocesadores = new JPanel();
 		panelMicroprocesadores.setVisible(false);
 		panelMicroprocesadores.setLayout(null);
 		panelMicroprocesadores.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelMicroprocesadores.setBounds(10, 385, 404, 209);
+		panelMicroprocesadores.setBounds(10, 330, 404, 209);
 		Panel.add(panelMicroprocesadores);
 
 		JLabel label = new JLabel("Tipo de Socket:");
@@ -386,12 +465,12 @@ public class AgregarSuminstrador extends JDialog {
 		label_2.setBounds(216, 11, 64, 14);
 		panelMicroprocesadores.add(label_2);
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(216, 36, 187, 20);
-		panelMicroprocesadores.add(textField_1);
+		tf_ModeloMicro = new JTextField();
+		tf_ModeloMicro.setColumns(10);
+		tf_ModeloMicro.setBounds(216, 36, 187, 20);
+		panelMicroprocesadores.add(tf_ModeloMicro);
 
-		JComboBox cbxTipoSocketMicro = new JComboBox();
+		cbxTipoSocketMicro = new JComboBox();
 		cbxTipoSocketMicro.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "PGA", "BGA", "LGA"}));
 		cbxTipoSocketMicro.setBounds(10, 36, 187, 20);
 		panelMicroprocesadores.add(cbxTipoSocketMicro);
@@ -400,14 +479,39 @@ public class AgregarSuminstrador extends JDialog {
 		lblVelocidad.setBounds(10, 67, 64, 14);
 		panelMicroprocesadores.add(lblVelocidad);
 
-		JSpinner spinner = new JSpinner();
-		spinner.setBounds(13, 92, 184, 20);
-		panelMicroprocesadores.add(spinner);
+		spinnerVelocidadMicro = new JSpinner();
+		spinnerVelocidadMicro.setBounds(13, 92, 184, 20);
+		panelMicroprocesadores.add(spinnerVelocidadMicro);
+		
+		JButton button_AgregarSuministroMicro = new JButton("Agregar Suministro");
+		button_AgregarSuministroMicro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				float precio = Float.valueOf(spinner_Precio.getValue().toString());
+				int cantMin = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMax = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int velocidad = Integer.valueOf(spinnerVelocidadMicro.getValue().toString());
+				
+				Componente aux = new Micro(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax, 0, tf_ModeloMicro.getText(), cbxTipoSocketMicro.getSelectedItem().toString(), velocidad);
+				
+				sumi.getComponentes().add(aux);
+				suministros.removeAllElements();
+				cargarSuministros();
+				list_Suministros.setModel(suministros);
+				codigoComp++;
+				updateCodigo();
+				cleanComponentes();
+			}
+		});
+		button_AgregarSuministroMicro.setActionCommand("OK");
+		button_AgregarSuministroMicro.setBounds(216, 91, 150, 23);
+		panelMicroprocesadores.add(button_AgregarSuministroMicro);
 
 		panelMemoriRam = new JPanel();
+		panelMemoriRam.setVisible(false);
 		panelMemoriRam.setLayout(null);
 		panelMemoriRam.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelMemoriRam.setBounds(10, 385, 404, 209);
+		panelMemoriRam.setBounds(10, 330, 404, 209);
 		Panel.add(panelMemoriRam);
 
 		JLabel lblCantidadDeMemoria = new JLabel("Cantidad de Memoria: ");
@@ -418,35 +522,152 @@ public class AgregarSuminstrador extends JDialog {
 		lblTipoDeRam.setBounds(207, 11, 83, 14);
 		panelMemoriRam.add(lblTipoDeRam);
 
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "DDR SDRAM", "DDR2 SDRAM", "DDR3 SDRAM", "DDR4 SDRAM", "DDR5 SDRAM", "DDR6 SDRAM"}));
-		comboBox_2.setBounds(207, 36, 187, 20);
-		panelMemoriRam.add(comboBox_2);
+		cbx_TipoRam = new JComboBox();
+		cbx_TipoRam.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "DDR SDRAM", "DDR2 SDRAM", "DDR3 SDRAM", "DDR4 SDRAM", "DDR5 SDRAM", "DDR6 SDRAM"}));
+		cbx_TipoRam.setBounds(207, 36, 187, 20);
+		panelMemoriRam.add(cbx_TipoRam);
 
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(10, 67, 187, 20);
-		panelMemoriRam.add(spinner_1);
+		spinner_CantExactaRam = new JSpinner();
+		spinner_CantExactaRam.setModel(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
+		spinner_CantExactaRam.setBounds(10, 67, 187, 20);
+		panelMemoriRam.add(spinner_CantExactaRam);
 
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "Giga-Bites", "Tera-Bites"}));
-		comboBox_1.setBounds(10, 36, 187, 20);
-		panelMemoriRam.add(comboBox_1);
+		cbx_CantidadMemoriaRam = new JComboBox();
+		cbx_CantidadMemoriaRam.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "Giga-Bites", "Tera-Bites"}));
+		cbx_CantidadMemoriaRam.setBounds(10, 36, 187, 20);
+		panelMemoriRam.add(cbx_CantidadMemoriaRam);
+		
+		JButton button_Agregar_Suministro_MR = new JButton("Agregar Suministro");
+		button_Agregar_Suministro_MR.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				float precio = Float.valueOf(spinner_Precio.getValue().toString());
+				int cantMin = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMax = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMemoria = Integer.valueOf(spinner_CantExactaRam.getValue().toString());
+				
+				Componente aux = new MemoriaRam(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax, 0, cantMemoria, cbx_TipoRam.getSelectedItem().toString());
+				//componente sss = new MemoriaRam(id, marca, serial, precio, cantMin, cantMax, cantReal, cantMemoria, tipoMemoria)
+				sumi.getComponentes().add(aux);
+				suministros.removeAllElements();
+				cargarSuministros();
+				list_Suministros.setModel(suministros);
+				codigoComp++;
+				updateCodigo();
+				cleanComponentes();
+			}
+		});
+		button_Agregar_Suministro_MR.setActionCommand("OK");
+		button_Agregar_Suministro_MR.setBounds(126, 125, 150, 23);
+		panelMemoriRam.add(button_Agregar_Suministro_MR);
+		
+		panelDiscoDuro = new JPanel();
+		panelDiscoDuro.setVisible(false);
+		panelDiscoDuro.setLayout(null);
+		panelDiscoDuro.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelDiscoDuro.setBounds(10, 330, 404, 209);
+		Panel.add(panelDiscoDuro);
+		
+		JLabel lblCapacidad = new JLabel("Capacidad:");
+		lblCapacidad.setBounds(10, 11, 83, 14);
+		panelDiscoDuro.add(lblCapacidad);
+		
+		JLabel label_6 = new JLabel("Modelo:");
+		label_6.setBounds(182, 11, 64, 14);
+		panelDiscoDuro.add(label_6);
+		
+		tf_ModeloDD = new JTextField();
+		tf_ModeloDD.setColumns(10);
+		tf_ModeloDD.setBounds(182, 36, 150, 20);
+		panelDiscoDuro.add(tf_ModeloDD);
+		
+		cbx_TipoConexionDD = new JComboBox();
+		cbx_TipoConexionDD.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "IDE", "SATA-1", "SATA-2", "SATA-3"}));
+		cbx_TipoConexionDD.setBounds(10, 94, 187, 20);
+		panelDiscoDuro.add(cbx_TipoConexionDD);
+		
+		JLabel lblTipoDeConexion = new JLabel("Tipo de conexion:");
+		lblTipoDeConexion.setBounds(10, 69, 103, 14);
+		panelDiscoDuro.add(lblTipoDeConexion);
+		
+		JButton button_Agregar_Suministro_DD = new JButton("Agregar Suministro");
+		button_Agregar_Suministro_DD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				float precio = Float.valueOf(spinner_Precio.getValue().toString());
+				int cantMin = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMax = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int capacidadDD = Integer.valueOf(spinner_Capacidad_DD.getValue().toString());
+				
+				Componente aux = new DiscoDuro(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax, 0, capacidadDD, tf_ModeloDD.getText(), cbx_TipoConexionDD.getSelectedItem().toString());
+				
+				sumi.getComponentes().add(aux);
+				suministros.removeAllElements();
+				cargarSuministros();
+				list_Suministros.setModel(suministros);
+				codigoComp++;
+				updateCodigo();
+				cleanComponentes();
+			}
+		});
+		button_Agregar_Suministro_DD.setActionCommand("OK");
+		button_Agregar_Suministro_DD.setBounds(219, 93, 150, 23);
+		panelDiscoDuro.add(button_Agregar_Suministro_DD);
+		
+		spinner_Capacidad_DD = new JSpinner();
+		spinner_Capacidad_DD.setBounds(10, 36, 150, 20);
+		panelDiscoDuro.add(spinner_Capacidad_DD);
+		
+		JLabel lblSuministros = new JLabel("Suministros:");
+		lblSuministros.setBounds(420, 318, 83, 14);
+		Panel.add(lblSuministros);
+		
+		JPanel panel_Suministros = new JPanel();
+		panel_Suministros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_Suministros.setBounds(420, 330, 149, 208);
+		Panel.add(panel_Suministros);
+		panel_Suministros.setLayout(null);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(0, 0, 149, 208);
+		panel_Suministros.add(scrollPane_1);
+		
+		list_Suministros = new JList();
+		scrollPane_1.setViewportView(list_Suministros);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton AgregarButton = new JButton("Agregar");
+				AgregarButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Tienda.getInstance().insertarSuministrador(sumi);
+						codigo++;
+						codigoComp = 1;
+						tF_Id.setText("Sumi- "+Tienda.getInstance().codSumi);
+						clean();
+						JOptionPane.showMessageDialog(null, "Suministrador Agregado", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+					}
+
+				});
 				AgregarButton.setActionCommand("OK");
 				buttonPane.add(AgregarButton);
 				getRootPane().setDefaultButton(AgregarButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+		updateCodigo();
 	}
 
 	private String genSerial(){
@@ -473,5 +694,99 @@ public class AgregarSuminstrador extends JDialog {
 		conexionesDD.addElement("SATA-3");
 
 	}
-
+	
+	private void updateCodigo() {
+		String pre = "";
+		if(rdbtnTarjetaMadre.isSelected()){
+			pre = "TM";
+		}
+		if(rdbtnDiscoDuro.isSelected()){
+		   pre = "DD";	
+		}
+		if(rdbtnMemoriaRam.isSelected()){
+			   pre = "MR";	
+		}
+		
+		if(rdbtnMicroprocesador.isSelected()){
+			   pre = "MP";	
+		}
+		tF_IdComponente.setText(pre+"-"+codigoComp+" ");
+		
+	}
+	
+	private void cargarSuministros() {
+		String info;
+		
+		for (Componente aux : sumi.getComponentes()) {
+			
+			info = "Id: "+aux.getId()+ "Marca: " + aux.getMarca()+" "+"Precio: "+aux.getPrecio() +"USD";
+			
+			if(aux instanceof MotherBoard) {
+				MotherBoard m = (MotherBoard) aux;
+				info = info + " Modelo: " + m.getModelo();
+			}
+			
+			if(aux instanceof Micro) {
+				Micro m = (Micro) aux;
+				info = info + " Modelo: " + m.getModelo()+" Tipo Socket: "+m.getTipoSocket();
+			}
+			
+			if(aux instanceof MemoriaRam) {
+				MemoriaRam m = (MemoriaRam) aux;
+				info = info + " Cantidad de Memoria: " + m.getCantMemoria() + cbx_CantidadMemoriaRam.getSelectedItem().toString() +" Tipo Memoria: " + m.getTipoMemoria();
+			}
+			
+			if(aux instanceof DiscoDuro) {
+				DiscoDuro m = (DiscoDuro) aux;
+				info = info + " Modelo: " + m.getModelo()+" Tipo Conexion: "+m.getTipoConexion();
+			}
+			
+			suministros.addElement(info);
+		}
+	}
+	
+	private void clean() {
+		cleanComponentes();
+		suministros.removeAllElements();
+		tF_Nombre.setText("");
+		tF_Pais.setText("");
+		tF_Marca.setText("");
+	}
+	
+	private void cleanComponentes() {
+		
+		rdbtnDiscoDuro.setSelected(false);
+		rdbtnMemoriaRam.setSelected(false);
+		rdbtnMicroprocesador.setSelected(false);
+		rdbtnTarjetaMadre.setSelected(true);
+		panelMicroprocesadores.setVisible(false);
+		panelMemoriRam.setVisible(false);
+		panelDiscoDuro.setVisible(false);
+		panelTargetaMadre.setVisible(true);
+		panel_ComponentesDelSumi.setVisible(true);
+		
+		cbxTipoSocket.setSelectedIndex(0);
+		cbx_RamComp.setSelectedIndex(0);
+		updateCodigo();
+		conexionesDD.removeAllElements();
+		conexionesDD_Compatibles.removeAllElements();
+		tF_ModeloTM.setText("");
+		tf_ModeloMicro.setText("");
+		tf_ModeloDD.setText("");
+		spinnerVelocidadMicro.setValue(new Integer(0));
+		cbxTipoSocketMicro.setSelectedIndex(0);
+		cbx_CantidadMemoriaRam.setSelectedIndex(0);
+		cbx_TipoRam.setSelectedIndex(0);
+		spinner_CantExactaRam.setValue(new Integer(0));
+		cbx_TipoConexionDD.setSelectedIndex(0);
+		spinner_Capacidad_DD.setValue(new Integer(0));
+		//tF_Marca.setText("");
+		spinner_Precio.setValue(new Float(0.0));
+		spinner_CantidadMinima.setValue(new Integer(0));
+		spinner_CantidaMaxima.setValue(new Integer(0));
+		
+		
+		lista_Conexiones();
+		
+	}
 }

@@ -64,13 +64,5 @@ public class Suministrador implements Serializable{
 	public void setComponentes(ArrayList<Componente> comps) {
 		this.componentes = comps;
 	}
-
-//	public static int getCod() {
-//		return cod;
-//	}
-
-//	public static void setCod(int cod) {
-//		Suministrador.cod = cod;
-//	}
 	
 }

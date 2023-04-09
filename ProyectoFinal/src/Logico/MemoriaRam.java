@@ -8,7 +8,7 @@ public class MemoriaRam extends Componente {
 	public MemoriaRam(String id, String marca, String serial, float precio, int cantMin, int cantMax, int cantReal,
 			float cantMemoria, String tipoMemoria) {
 		super(id, marca, serial, precio, cantMin, cantMax, cantReal);
-		this.cantMemoria = 0;
+		this.cantMemoria = cantMemoria;
 		this.tipoMemoria = tipoMemoria;
 	}
 
@@ -16,7 +16,7 @@ public class MemoriaRam extends Componente {
 		return cantMemoria;
 	}
 
-	public void setCantMemoria(float cantMemoria) {
+	public void setCantMemoria(int cantMemoria) {
 		this.cantMemoria = cantMemoria;
 	}
 

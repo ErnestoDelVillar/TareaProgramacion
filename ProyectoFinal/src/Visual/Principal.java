@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Principal extends JFrame {
 
@@ -47,10 +49,20 @@ public class Principal extends JFrame {
 		menuBar.add(mnAdministrador);
 		
 		JMenuItem mntmSuministrador = new JMenuItem("Agregar Suministrador");
+		mntmSuministrador.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AgregarSuminstrador agregarSuministrador = new AgregarSuminstrador();
+				agregarSuministrador.setModal(true);
+				agregarSuministrador.setVisible(true);
+			}
+		});
 		mnAdministrador.add(mntmSuministrador);
 		
-		JMenuItem mntmCrearCombo = new JMenuItem("Agregar Combo");
-		mnAdministrador.add(mntmCrearCombo);
+		JMenuItem mntmNewMenuItem = new JMenuItem("Ver Suministradores");
+		mnAdministrador.add(mntmNewMenuItem);
+		
+		JMenuItem mntmHacerPedido = new JMenuItem("Hacer Pedido");
+		mnAdministrador.add(mntmHacerPedido);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
