@@ -100,6 +100,7 @@ public class AgregarSuminstrador extends JDialog {
 	 */
 	public AgregarSuminstrador() {
 		setBounds(100, 100, 614, 633);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		Panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(Panel, BorderLayout.CENTER);
@@ -409,7 +410,7 @@ public class AgregarSuminstrador extends JDialog {
 		panel.setLayout(null);
 		panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
-		list_Compatibles = new JList();
+		list_Compatibles = new JList<String>();
 		list_Compatibles.setBounds(0, 0, 70, 101);
 		panel.add(list_Compatibles);
 
@@ -437,7 +438,9 @@ public class AgregarSuminstrador extends JDialog {
 				aux = new MotherBoard(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax , 0, tF_ModeloTM.getText(), cbxTipoSocket.getSelectedItem().toString(), cbx_RamComp.getSelectedItem().toString(), cc);
 				
 				sumi.getComponentes().add(aux);
-				suministros.removeAllElements();
+				suministros.clear();
+				list_Suministros.removeAll();
+				
 				cargarSuministros();
 				list_Suministros.setModel(suministros);
 				codigoComp++;
@@ -495,7 +498,7 @@ public class AgregarSuminstrador extends JDialog {
 				Componente aux = new Micro(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax, 0, tf_ModeloMicro.getText(), cbxTipoSocketMicro.getSelectedItem().toString(), velocidad);
 				
 				sumi.getComponentes().add(aux);
-				suministros.removeAllElements();
+				suministros.clear();
 				cargarSuministros();
 				list_Suministros.setModel(suministros);
 				codigoComp++;
@@ -549,7 +552,7 @@ public class AgregarSuminstrador extends JDialog {
 				Componente aux = new MemoriaRam(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax, 0, cantMemoria, cbx_TipoRam.getSelectedItem().toString());
 				//componente sss = new MemoriaRam(id, marca, serial, precio, cantMin, cantMax, cantReal, cantMemoria, tipoMemoria)
 				sumi.getComponentes().add(aux);
-				suministros.removeAllElements();
+				suministros.clear();
 				cargarSuministros();
 				list_Suministros.setModel(suministros);
 				codigoComp++;
@@ -632,7 +635,8 @@ public class AgregarSuminstrador extends JDialog {
 		scrollPane_1.setBounds(0, 0, 149, 208);
 		panel_Suministros.add(scrollPane_1);
 		
-		list_Suministros = new JList();
+		list_Suministros = new JList<String>();
+		list_Suministros.setModel(suministros);
 		scrollPane_1.setViewportView(list_Suministros);
 		{
 			JPanel buttonPane = new JPanel();
@@ -642,12 +646,19 @@ public class AgregarSuminstrador extends JDialog {
 				JButton AgregarButton = new JButton("Agregar");
 				AgregarButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
+						sumi.setId(tF_Id.getText());
+						sumi.setNombre(tF_Nombre.getText());
+						sumi.setPais(tF_Pais.getText());
+						
 						Tienda.getInstance().insertarSuministrador(sumi);
 						codigo++;
 						codigoComp = 1;
 						tF_Id.setText("Sumi- "+Tienda.getInstance().codSumi);
-						clean();
 						JOptionPane.showMessageDialog(null, "Suministrador Agregado", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+						clean();
+						suministros.removeAllElements();
+						sumi = new Suministrador("", "", "", 0);
 					}
 
 				});
@@ -715,6 +726,7 @@ public class AgregarSuminstrador extends JDialog {
 	}
 	
 	private void cargarSuministros() {
+		
 		String info;
 		
 		for (Componente aux : sumi.getComponentes()) {
@@ -747,7 +759,6 @@ public class AgregarSuminstrador extends JDialog {
 	
 	private void clean() {
 		cleanComponentes();
-		suministros.removeAllElements();
 		tF_Nombre.setText("");
 		tF_Pais.setText("");
 		tF_Marca.setText("");
@@ -780,7 +791,6 @@ public class AgregarSuminstrador extends JDialog {
 		spinner_CantExactaRam.setValue(new Integer(0));
 		cbx_TipoConexionDD.setSelectedIndex(0);
 		spinner_Capacidad_DD.setValue(new Integer(0));
-		//tF_Marca.setText("");
 		spinner_Precio.setValue(new Float(0.0));
 		spinner_CantidadMinima.setValue(new Integer(0));
 		spinner_CantidaMaxima.setValue(new Integer(0));

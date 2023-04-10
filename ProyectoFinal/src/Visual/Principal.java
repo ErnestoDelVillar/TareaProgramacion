@@ -38,6 +38,7 @@ public class Principal extends JFrame {
 	public Principal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -59,6 +60,13 @@ public class Principal extends JFrame {
 		mnAdministrador.add(mntmSuministrador);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Ver Suministradores");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VerSuministradores verSuministradores = new VerSuministradores();
+				verSuministradores.setModal(true);
+				verSuministradores.setVisible(true);
+			}
+		});
 		mnAdministrador.add(mntmNewMenuItem);
 		
 		JMenuItem mntmHacerPedido = new JMenuItem("Hacer Pedido");
