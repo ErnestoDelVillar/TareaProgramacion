@@ -18,6 +18,13 @@ public class Cliente {
 		this.creditoEnUso = creditoEnUso;
 	}
 
+	public Cliente(String cedula, String nombre, String direccion, String telefono) {
+		this.cedula = cedula;
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.telefono = telefono;
+	}
+
 	public String getCedula() {
 		return cedula;
 	}

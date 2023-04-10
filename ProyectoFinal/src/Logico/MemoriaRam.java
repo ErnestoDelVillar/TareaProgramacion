@@ -16,8 +16,8 @@ public class MemoriaRam extends Componente {
 		return cantMemoria;
 	}
 
-	public void setCantMemoria(int cantMemoria) {
-		this.cantMemoria = cantMemoria;
+	public void setCantMemoria(Float float1) {
+		this.cantMemoria = float1;
 	}
 
 	public String getTipoMemoria() {

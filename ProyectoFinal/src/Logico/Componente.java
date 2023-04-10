@@ -1,15 +1,20 @@
 package Logico;
 
-public class Componente {
-	
-	protected static int codigo;
-	protected String id;
-	protected String marca;
-	protected String serial;
-	protected float precio;
-	protected int cantMin;
-	protected int cantMax;
-	protected int cantReal;
+import java.io.Serializable;
+
+public abstract class Componente implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String id;
+	private String marca;
+	private String serial;
+	private float precio;
+	private int cantMin;
+	private int cantMax;
+	private int cantReal;
+	public static int cod = 1;
 	
 	public Componente(String id, String marca, String serial, float precio, int cantMin, int cantMax, int cantReal) {
 		super();
@@ -17,17 +22,10 @@ public class Componente {
 		this.marca = marca;
 		this.serial = serial;
 		this.precio = precio;
-		this.cantMin = 0;
-		this.cantMax = 0;
-		this.cantReal = 0;
-	}
-
-	public static int getCodigo() {
-		return codigo;
-	}
-
-	public static void setCodigo(int codigo) {
-		Componente.codigo = codigo;
+		this.cantMin = cantMin;
+		this.cantMax = cantMax;
+		this.cantReal = cantReal;
+		Componente.cod++;
 	}
 
 	public String getId() {
@@ -85,6 +83,4 @@ public class Componente {
 	public void setCantReal(int cantReal) {
 		this.cantReal = cantReal;
 	}
-	
-	
 }

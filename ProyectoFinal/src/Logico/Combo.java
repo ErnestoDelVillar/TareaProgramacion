@@ -1,30 +1,24 @@
 package Logico;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Combo {
+public class Combo implements Serializable {
 	
-	static int codigo;
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String nombre;
 	private ArrayList<Componente> misComponentes;
 	private int descuento;
+	public static int codigo = 1;
 	
-	public Combo(int codigo, String id, String nombre, ArrayList<Componente> misComponentes, int descuento) {
+	public Combo(String id, String nombre, int descuento) {
 		super();
-		this.codigo = codigo;
 		this.id = id;
 		this.nombre = nombre;
-		this.misComponentes = misComponentes;
+		this.misComponentes = new ArrayList<>();
 		this.descuento = descuento;
-	}
-
-	public int getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+		Combo.codigo++;
 	}
 
 	public String getId() {
@@ -43,12 +37,12 @@ public class Combo {
 		this.nombre = nombre;
 	}
 
-	public ArrayList<Componente> getMisComponentes() {
+	public ArrayList<Componente> getComponentes() {
 		return misComponentes;
 	}
 
-	public void setMisComponentes(ArrayList<Componente> misComponentes) {
-		this.misComponentes = misComponentes;
+	public void setComponentes(ArrayList<Componente> componentes) {
+		this.misComponentes = componentes;
 	}
 
 	public int getDescuento() {
@@ -59,14 +53,15 @@ public class Combo {
 		this.descuento = descuento;
 	}
 	
-	public float precio() 
-	{
+	public void agregarComponente(Componente c) {
+		misComponentes.add(c);
+	}
+	
+	public float precio() {
 		float total = 0;
-		for (Componente c : misComponentes)
-		{
+		for (Componente c : misComponentes) {
 			total += c.getPrecio();
 		}
 		return total - (total * ((float)descuento/100) );
 	}
-	
 }

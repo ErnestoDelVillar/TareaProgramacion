@@ -438,7 +438,7 @@ public class Tienda implements Serializable{
 
 	public void updateCodigos() {
 		codUsuario = Usuario.cod;
-		codComponente = Componente.codigo;
+		codComponente = Componente.cod;
 		codCombo = Combo.codigo;
 		codFactura = Factura.cod;
 		codOrden = Compra.cod;
@@ -447,7 +447,7 @@ public class Tienda implements Serializable{
 
 	public void loadCodigos() {
 		Usuario.cod = codUsuario;
-		Componente.codigo = codComponente;
+		Componente.cod = codComponente;
 		Combo.codigo = codCombo;
 		Factura.cod = codFactura;
 		Compra.cod = codOrden;
@@ -462,7 +462,7 @@ public class Tienda implements Serializable{
 	}
 
 	public boolean checkCombo(Combo c) {
-		for (Componente comp : c.getMisComponentes()) {
+		for (Componente comp : c.getComponentes()) {
 			if (comp.getCantReal() == 0) {
 				return false;
 			}
