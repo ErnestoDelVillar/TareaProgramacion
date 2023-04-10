@@ -64,7 +64,7 @@ public class Principal extends JFrame {
 				ObjectOutputStream writer;
 				
 				try {
-					tiendaOutput = new  FileOutputStream("tienda.dat");
+					tiendaOutput = new  FileOutputStream("tienda2.dat");
 					writer = new ObjectOutputStream(tiendaOutput);
 					writer.writeObject(Tienda.getInstance());
 					

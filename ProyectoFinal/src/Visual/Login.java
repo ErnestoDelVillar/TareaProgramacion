@@ -50,7 +50,7 @@ public class Login extends JDialog {
 				// Tratando de leer tienda.dat
 				try {
 					
-					tiendaInput = new FileInputStream ("tienda.dat");
+					tiendaInput = new FileInputStream ("tienda2.dat");
 					reader = new ObjectInputStream(tiendaInput);
 					Tienda temp = (Tienda) reader.readObject();
 					Tienda.setTienda(temp);
@@ -65,7 +65,7 @@ public class Login extends JDialog {
 					// Creando tienda.dat si no existe con un usuario default
 					try {
 						
-						tiendaOutput = new  FileOutputStream("tienda.dat");
+						tiendaOutput = new  FileOutputStream("tienda2.dat");
 						writer = new ObjectOutputStream(tiendaOutput);
 						Usuario adminUser = new Administrador("U-" + Usuario.cod, "Administrador", "Admin", "Admin",0);
 						Tienda.getInstance().insertarUsuario(adminUser);
