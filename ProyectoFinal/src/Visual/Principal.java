@@ -64,7 +64,7 @@ public class Principal extends JFrame {
 				ObjectOutputStream writer;
 				
 				try {
-					tiendaOutput = new  FileOutputStream("tienda2.dat");
+					tiendaOutput = new  FileOutputStream("tienda.dat");
 					writer = new ObjectOutputStream(tiendaOutput);
 					writer.writeObject(Tienda.getInstance());
 					
@@ -84,7 +84,7 @@ public class Principal extends JFrame {
 		setBounds(100, 100, 1059, 635);
 		
 		dim = getToolkit().getScreenSize();
-		setSize(270, 270);
+		setSize(323, 302);
 		
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -191,6 +191,9 @@ public class Principal extends JFrame {
 		JMenuItem menuItem = new JMenuItem("Hacer Pedido");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				HacerPedido hacerPedido = new HacerPedido();
+				hacerPedido.setModal(true);
+				hacerPedido.setVisible(true);
 			}
 		});
 		mnNewMenu.add(menuItem);

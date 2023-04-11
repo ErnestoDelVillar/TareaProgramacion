@@ -1,6 +1,6 @@
 package Logico;
 
-public class DiscoDuro extends Componente {
+public class DiscoDuro extends Componente  {
 	
 	private float capacidad;
 	private String modelo;

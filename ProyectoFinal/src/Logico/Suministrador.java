@@ -22,7 +22,6 @@ public class Suministrador implements Serializable{
 		this.pais = pais;
 		this.entrega = entrega;
 		this.componentes = new ArrayList<Componente>();
-		//cod++;
 	}
 
 	public String getId() {

@@ -244,6 +244,18 @@ public class ModificarSuminstrador extends JDialog {
 		Panel.add(btnEliminarSuministro);
 
 		JButton btnAgregarSuministro = new JButton("Agregar Suministro");
+		btnAgregarSuministro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				Componente comp = null;
+				AgregarComponente agrComp = new AgregarComponente(comp);
+				agrComp.setModal(true);
+				agrComp.setVisible(true);
+				suministrador.getComponentes().add(comp);
+				loadComp(0);
+				
+			}
+		});
 		btnAgregarSuministro.setActionCommand("OK");
 		btnAgregarSuministro.setBounds(298, 400, 134, 23);
 		Panel.add(btnAgregarSuministro);

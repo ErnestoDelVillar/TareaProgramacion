@@ -1,6 +1,6 @@
 package Logico;
 
-public class Micro extends Componente {
+public class Micro extends Componente  {
 	
 	private String modelo;
 	private String tipoSocket;

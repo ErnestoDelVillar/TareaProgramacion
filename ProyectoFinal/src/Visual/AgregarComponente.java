@@ -109,7 +109,7 @@ public class AgregarComponente extends JDialog {
 			setTitle("Modificar Componente");
 		}
 		
-		setBounds(100, 100, 460, 744);
+		setBounds(100, 100, 460, 734);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout());
@@ -914,8 +914,11 @@ public class AgregarComponente extends JDialog {
 	}
 	
 	private void loadConexiones() {
+		
+		listModelDisp.addElement("IDE");
 		listModelDisp.addElement("SATA");
-		listModelDisp.addElement("SATA 2");
+		listModelDisp.addElement("SATA-2");
+		listModelDisp.addElement("SATA-3");
 		listModelDisp.addElement("DDR");
 		listModelDisp.addElement("DDR 2");
 		listModelDisp.addElement("DDR 3");

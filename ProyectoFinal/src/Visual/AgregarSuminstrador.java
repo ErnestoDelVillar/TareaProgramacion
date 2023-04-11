@@ -703,7 +703,11 @@ public class AgregarSuminstrador extends JDialog {
 		conexionesDD.addElement("SATA");
 		conexionesDD.addElement("SATA-2");
 		conexionesDD.addElement("SATA-3");
-
+		conexionesDD.addElement("DDR");
+		conexionesDD.addElement("DDR 2");
+		conexionesDD.addElement("DDR 3");
+		conexionesDD.addElement("LGA");
+		conexionesDD.addElement("TR4");
 	}
 	
 	private void updateCodigo() {

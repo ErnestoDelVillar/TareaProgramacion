@@ -1,6 +1,8 @@
 package Logico;
 
-public class Cliente {
+import java.io.Serializable;
+
+public class Cliente implements Serializable{
 	
 	private String cedula;
 	private String nombre;

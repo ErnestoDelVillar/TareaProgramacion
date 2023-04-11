@@ -1,6 +1,6 @@
 package Logico;
 
-public class MemoriaRam extends Componente {
+public class MemoriaRam extends Componente  {
 	
 	private float cantMemoria;
 	private String tipoMemoria;

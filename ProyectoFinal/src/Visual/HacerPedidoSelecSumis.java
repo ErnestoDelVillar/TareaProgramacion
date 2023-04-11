@@ -2,28 +2,47 @@ package Visual;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+
+import Logico.Componente;
+import Logico.Suministrador;
+import Logico.Tienda;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.JSpinner;
 
 public class HacerPedidoSelecSumis extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField tF_Id;
+	private JTextField tF_Nombre;
+	private JTextField tF_Pais;
+	private JTable table;
+	private Suministrador suministrador = null;
 
+	private static DefaultTableModel model;
+	private static Object rows[];
+	
+	int index;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			HacerPedidoSelecSumis dialog = new HacerPedidoSelecSumis();
+			HacerPedidoSelecSumis dialog = new HacerPedidoSelecSumis(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -34,7 +53,8 @@ public class HacerPedidoSelecSumis extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public HacerPedidoSelecSumis() {
+	public HacerPedidoSelecSumis(Suministrador selected) {
+		suministrador = selected;
 		setBounds(100, 100, 514, 375);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -52,12 +72,12 @@ public class HacerPedidoSelecSumis extends JDialog {
 				panel.add(label);
 			}
 			{
-				textField = new JTextField();
-				textField.setText((String) null);
-				textField.setEditable(false);
-				textField.setColumns(10);
-				textField.setBounds(10, 36, 127, 20);
-				panel.add(textField);
+				tF_Id = new JTextField();
+				tF_Id.setText((String) null);
+				tF_Id.setEditable(false);
+				tF_Id.setColumns(10);
+				tF_Id.setBounds(10, 36, 127, 20);
+				panel.add(tF_Id);
 			}
 			{
 				JLabel label = new JLabel("Nombre:");
@@ -65,11 +85,11 @@ public class HacerPedidoSelecSumis extends JDialog {
 				panel.add(label);
 			}
 			{
-				textField_1 = new JTextField((String) null);
-				textField_1.setEditable(false);
-				textField_1.setColumns(10);
-				textField_1.setBounds(161, 36, 127, 20);
-				panel.add(textField_1);
+				tF_Nombre = new JTextField((String) null);
+				tF_Nombre.setEditable(false);
+				tF_Nombre.setColumns(10);
+				tF_Nombre.setBounds(161, 36, 127, 20);
+				panel.add(tF_Nombre);
 			}
 			{
 				JLabel label = new JLabel("Pais:");
@@ -77,11 +97,49 @@ public class HacerPedidoSelecSumis extends JDialog {
 				panel.add(label);
 			}
 			{
-				textField_2 = new JTextField((String) null);
-				textField_2.setEditable(false);
-				textField_2.setColumns(10);
-				textField_2.setBounds(312, 36, 127, 20);
-				panel.add(textField_2);
+				tF_Pais = new JTextField((String) null);
+				tF_Pais.setEditable(false);
+				tF_Pais.setColumns(10);
+				tF_Pais.setBounds(312, 36, 127, 20);
+				panel.add(tF_Pais);
+			}
+			{
+				JLabel lblSeleccioneElSuministro = new JLabel("Seleccione El Suministro:");
+				lblSeleccioneElSuministro.setBounds(10, 67, 144, 14);
+				panel.add(lblSeleccioneElSuministro);
+			}
+
+			JPanel panel_1 = new JPanel();
+			panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel_1.setBounds(10, 92, 278, 178);
+			panel.add(panel_1);
+			panel_1.setLayout(null);
+
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setBounds(0, 0, 278, 178);
+			panel_1.add(scrollPane, BorderLayout.CENTER);
+			{
+				String[] headers = {"ID","Marca","Precio","Cantidad Maxima"};
+
+				table = new JTable();
+				table.setCellSelectionEnabled(true);
+				table.setColumnSelectionAllowed(true);
+				table.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						index = table.getSelectedRow();
+						if(index >=0 ) {
+							
+						}
+					}
+				});
+
+				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				scrollPane.setViewportView(table);
+
+				model = new DefaultTableModel();
+				model.setColumnIdentifiers(headers);
+				table.setModel(model);
 			}
 		}
 		{
@@ -100,6 +158,30 @@ public class HacerPedidoSelecSumis extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-	}
+		loadSuministrador();
+		loadSuministrosSumi();
 
+	}
+	
+	private void loadSuministrador() {
+		
+		tF_Id.setText(suministrador.getId());
+		tF_Pais.setText(suministrador.getPais());
+		tF_Nombre.setText(suministrador.getNombre());
+		
+	}
+	
+	private void loadSuministrosSumi() {
+
+		model.setRowCount(0);
+		rows = new Object[model.getColumnCount()];
+		for (Componente aux : suministrador.getComponentes()) {
+
+			rows[0] = aux.getId();
+			rows[1] = aux.getMarca();
+			rows[2] = aux.getPrecio();
+			rows[3] = aux.getCantMax();
+			model.addRow(rows);
+		}
+	}
 }

@@ -103,7 +103,9 @@ public class HacerPedido extends JDialog {
 				btnSeleccionarSumi.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {							
 						if(selected!=null){
-							
+							HacerPedidoSelecSumis hacerSumiSelcSumi = new HacerPedidoSelecSumis(selected);
+							hacerSumiSelcSumi.setModal(true);
+							hacerSumiSelcSumi.setVisible(true);
 						}
 					}
 				});
