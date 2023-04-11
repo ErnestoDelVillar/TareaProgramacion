@@ -1,9 +1,11 @@
 package Visual;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,6 +15,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Logico.Componente;
+import Logico.MotherBoard;
 import Logico.Suministrador;
 import Logico.Tienda;
 
@@ -23,6 +26,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JSpinner;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class HacerPedidoSelecSumis extends JDialog {
 
@@ -147,10 +152,18 @@ public class HacerPedidoSelecSumis extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				JButton HacerPedidoButton = new JButton("Hacer Pedido");
+				HacerPedidoButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						
+						agregarComponentesPedidoAtienda(suministrador.getComponentes().get(index), suministrador.getComponentes().get(index).getCantMax());
+						dispose();
+					}
+
+				});
+				HacerPedidoButton.setActionCommand("OK");
+				buttonPane.add(HacerPedidoButton);
+				getRootPane().setDefaultButton(HacerPedidoButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -184,4 +197,36 @@ public class HacerPedidoSelecSumis extends JDialog {
 			model.addRow(rows);
 		}
 	}
+	
+	private String genSerial(){
+
+		String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+		Random r = new Random();
+		char c;
+		String codigo = "";
+
+		for(int i = 0; i < 10; i++){
+			c = alphabet.charAt(r.nextInt(alphabet.length()));
+			codigo += c;
+		}
+
+		return codigo;
+	}
+	
+	private void agregarComponentesPedidoAtienda(Componente componente, int CantPedido) {
+		
+		String serial;
+		Componente aux = componente;
+		for(int i = 0;i<CantPedido;i++) {
+			
+			serial = genSerial();
+			aux.setCantMax(CantPedido);
+			aux.setCantMin(CantPedido);
+			aux.setSerial(serial);
+			aux.setCantReal(CantPedido);
+			Tienda.getInstance().getInventario().add(i, aux);
+		}
+	}
+	
 }

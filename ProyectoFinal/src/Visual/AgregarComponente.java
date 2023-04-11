@@ -579,8 +579,6 @@ public class AgregarComponente extends JDialog {
 				JButton okButton = new JButton("");
 				if (selected == null) {
 					okButton.setText("Registrar");
-				} else {
-					okButton.setText("Modificar");
 				}
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {

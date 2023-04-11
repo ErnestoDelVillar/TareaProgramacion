@@ -681,21 +681,6 @@ public class AgregarSuminstrador extends JDialog {
 		updateCodigo();
 	}
 
-	private String genSerial(){
-
-		String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-		Random r = new Random();
-		char c;
-		String codigo = "";
-
-		for(int i = 0; i < 10; i++){
-			c = alphabet.charAt(r.nextInt(alphabet.length()));
-			codigo += c;
-		}
-
-		return codigo;
-	}
 
 	void lista_Conexiones() {
 

@@ -301,14 +301,13 @@ public class ModificarSuminstrador extends JDialog {
 
 		model.setRowCount(0);
 		rows = new Object[model.getColumnCount()];
-		if(index == 0){
+		
 			for (Componente aux : suministrador.getComponentes()) {
 
 				rows[0] = aux.getId();
 				rows[1] = aux.getMarca();
 				rows[2] = aux.getPrecio();
 				model.addRow(rows);
-			}
 		}
 	}
 
