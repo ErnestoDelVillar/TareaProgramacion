@@ -84,7 +84,7 @@ public class Principal extends JFrame {
 		setBounds(100, 100, 1059, 635);
 		
 		dim = getToolkit().getScreenSize();
-		setSize(dim.width, dim.height-35);
+		setSize(270, 270);
 		
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -179,16 +179,6 @@ public class Principal extends JFrame {
 		JMenu mnNewMenu = new JMenu("Inventario");
 		mnAdmin.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Registrar Componente");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				AgregarComponente regComp = new AgregarComponente(null);
-				regComp.setModal(true);
-				regComp.setVisible(true);
-			}
-		});
-		mnNewMenu.add(mntmNewMenuItem_2);
-		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Ver inventario");
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -197,12 +187,22 @@ public class Principal extends JFrame {
 				listComp.setVisible(true);
 			}
 		});
+		
+		JMenuItem menuItem = new JMenuItem("Hacer Pedido");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		mnNewMenu.add(menuItem);
+		
+		JMenuItem mntmListarPedidos = new JMenuItem("Ver Pedidos");
+		mnNewMenu.add(mntmListarPedidos);
 		mnNewMenu.add(mntmNewMenuItem_3);
 		
 		JMenu mnNewMenu_1 = new JMenu("Combos");
 		mnAdmin.add(mnNewMenu_1);
 		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Nuevo");
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Nuevo Combo");
 		mntmNewMenuItem_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AgregarCombo regcombo = new AgregarCombo(null);
@@ -212,7 +212,7 @@ public class Principal extends JFrame {
 		});
 		mnNewMenu_1.add(mntmNewMenuItem_4);
 		
-		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Listar");
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Lista de combos");
 		mntmNewMenuItem_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListarCombo listCombo= new ListarCombo(null);
@@ -245,39 +245,6 @@ public class Principal extends JFrame {
 		});
 		mnNewMenu_2.add(mntmNewMenuItem_7);
 		
-		JMenuItem mntmNewMenuItem_20 = new JMenuItem("Editar");
-		mntmNewMenuItem_20.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ModificarSuminstrador ModiSumi=new ModificarSuminstrador(null);
-				ModiSumi.setModal(true);
-				ModiSumi.setVisible(true);
-			}
-		});
-		mnNewMenu_2.add(mntmNewMenuItem_20);
-		
-		JMenu mnNewMenu_3 = new JMenu("Ordenes de Compra");
-		mnAdmin.add(mnNewMenu_3);
-		
-		JMenuItem mntmNewMenuItem_8 = new JMenuItem("Hacer Pedido");
-		mntmNewMenuItem_8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			AgregarCompra regOrden=new AgregarCompra(null);
-			regOrden.setModal(true);
-			regOrden.setVisible(true);
-			}
-		});
-		mnNewMenu_3.add(mntmNewMenuItem_8);
-		
-		JMenuItem mntmNewMenuItem_9 = new JMenuItem("Listar");
-		mntmNewMenuItem_9.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ListarCompra listOrdenCompra=new ListarCompra();
-				listOrdenCompra.setModal(true);
-				listOrdenCompra.setVisible(true);
-			}
-		});
-		mnNewMenu_3.add(mntmNewMenuItem_9);
-		
 		JMenuItem mntmNewMenuItem_10 = new JMenuItem("Otorgar Cr\u00E9dito");
 		mntmNewMenuItem_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -296,12 +263,6 @@ public class Principal extends JFrame {
 		panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
-		flowLayout.setVgap(12);
-		panel.add(panel_1, BorderLayout.SOUTH);
 	}
 
 }

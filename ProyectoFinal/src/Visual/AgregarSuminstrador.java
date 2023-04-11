@@ -433,7 +433,7 @@ public class AgregarSuminstrador extends JDialog {
 				
 				float precio = Float.valueOf(spinner_Precio.getValue().toString());
 				int cantMin = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
-				int cantMax = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMax = Integer.valueOf(spinner_CantidaMaxima.getValue().toString());
 				
 				aux = new MotherBoard(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax , 0, tF_ModeloTM.getText(), cbxTipoSocket.getSelectedItem().toString(), cbx_RamComp.getSelectedItem().toString(), cc);
 				
@@ -492,7 +492,7 @@ public class AgregarSuminstrador extends JDialog {
 				
 				float precio = Float.valueOf(spinner_Precio.getValue().toString());
 				int cantMin = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
-				int cantMax = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMax = Integer.valueOf(spinner_CantidaMaxima.getValue().toString());
 				int velocidad = Integer.valueOf(spinnerVelocidadMicro.getValue().toString());
 				
 				Componente aux = new Micro(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax, 0, tf_ModeloMicro.getText(), cbxTipoSocketMicro.getSelectedItem().toString(), velocidad);
@@ -546,7 +546,7 @@ public class AgregarSuminstrador extends JDialog {
 				
 				float precio = Float.valueOf(spinner_Precio.getValue().toString());
 				int cantMin = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
-				int cantMax = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMax = Integer.valueOf(spinner_CantidaMaxima.getValue().toString());
 				int cantMemoria = Integer.valueOf(spinner_CantExactaRam.getValue().toString());
 				
 				Componente aux = new MemoriaRam(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax, 0, cantMemoria, cbx_TipoRam.getSelectedItem().toString());
@@ -599,7 +599,7 @@ public class AgregarSuminstrador extends JDialog {
 				
 				float precio = Float.valueOf(spinner_Precio.getValue().toString());
 				int cantMin = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
-				int cantMax = Integer.valueOf(spinner_CantidadMinima.getValue().toString());
+				int cantMax = Integer.valueOf(spinner_CantidaMaxima.getValue().toString());
 				int capacidadDD = Integer.valueOf(spinner_Capacidad_DD.getValue().toString());
 				
 				Componente aux = new DiscoDuro(tF_IdComponente.getText(), tF_Marca.getText(), "", precio, cantMin, cantMax, 0, capacidadDD, tf_ModeloDD.getText(), cbx_TipoConexionDD.getSelectedItem().toString());

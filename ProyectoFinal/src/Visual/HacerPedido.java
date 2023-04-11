@@ -27,22 +27,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-public class VerSuministradores extends JDialog {
+public class HacerPedido extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private static DefaultTableModel model;
 	private static Object rows[];
 	private Suministrador selected;
-	private JButton btnDelete;
-	private JButton btnUpdate;
+	private JButton btnSeleccionarSumi;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			VerSuministradores dialog = new VerSuministradores();
+			HacerPedido dialog = new HacerPedido();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -53,7 +52,7 @@ public class VerSuministradores extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VerSuministradores() {
+	public HacerPedido() {
 		setBounds(100, 100, 633, 345);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -77,8 +76,7 @@ public class VerSuministradores extends JDialog {
 						public void mouseClicked(MouseEvent e) {
 							int index = table.getSelectedRow();
 							if(index >=0 ) {
-								btnDelete.setEnabled(true);
-								btnUpdate.setEnabled(true);
+								btnSeleccionarSumi.setEnabled(true);
 								String id = table.getValueAt(index, 0).toString();
 								selected = Tienda.getInstance().buscarSumiById(id);
 							}
@@ -100,38 +98,16 @@ public class VerSuministradores extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				btnDelete = new JButton("Eliminar");
-				btnDelete.setEnabled(false);
-				btnDelete.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-						
+				btnSeleccionarSumi = new JButton("Seleccionar Suministrador");
+				btnSeleccionarSumi.setEnabled(false);
+				btnSeleccionarSumi.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {							
 						if(selected!=null){
-							int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar el cliente con cedula: "+selected.getId(), "Eliminar Suministrador", JOptionPane.OK_CANCEL_OPTION);
-							if(option == JOptionPane.OK_OPTION){
-							  Tienda.getInstance().eliminarSuministrador(selected);
-							  loadSuministradores(0);
-							  btnDelete.setEnabled(false);
-							}
 							
 						}
 					}
 				});
-				buttonPane.add(btnDelete);
-			}
-			{
-				btnUpdate = new JButton("Modificar");
-				btnUpdate.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						ModificarSuminstrador modSumi = new ModificarSuminstrador(selected);
-						modSumi.setModal(true);
-						modSumi.setVisible(true);
-					}
-				});
-				btnUpdate.setEnabled(false);
-				btnUpdate.setActionCommand("OK");
-				buttonPane.add(btnUpdate);
-				getRootPane().setDefaultButton(btnUpdate);
+				buttonPane.add(btnSeleccionarSumi);
 			}
 			{
 				JButton btnCancelar = new JButton("Cancelar");

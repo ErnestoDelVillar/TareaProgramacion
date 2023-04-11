@@ -50,12 +50,18 @@ public class ModificarSuminstrador extends JDialog {
 	private JTextField tF_Nombre;
 	private JTextField tF_Pais;
 	private JPanel panelComponentesSumi;
-	
+
 	private DefaultTableModel model;
 	private Object rows[];
 	private Suministrador suministrador = null;
+	private Componente componente = null;
 
 	private JTable table;
+
+	private JButton btnModificarSuministro;
+	private JButton btnEliminarSuministro;
+	private int index;
+
 	/**
 	 * Launch the application.
 	 */
@@ -72,10 +78,10 @@ public class ModificarSuminstrador extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ModificarSuminstrador(Suministrador pSuministrados) {
-		
-		suministrador = pSuministrados;
-		setBounds(100, 100, 464, 497);
+	public ModificarSuminstrador(Suministrador pSuministrador) {
+
+		suministrador = pSuministrador;
+		setBounds(100, 100, 464, 508);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		Panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -145,7 +151,6 @@ public class ModificarSuminstrador extends JDialog {
 			panel.add(lblNombre);
 
 			tF_Nombre = new JTextField(suministrador.getNombre());
-			tF_Nombre.setEditable(false);
 			tF_Nombre.setColumns(10);
 			tF_Nombre.setBounds(10, 78, 184, 20);
 			panel.add(tF_Nombre);
@@ -155,7 +160,6 @@ public class ModificarSuminstrador extends JDialog {
 			panel.add(lblPais);
 
 			tF_Pais = new JTextField(suministrador.getPais());
-			tF_Pais.setEditable(false);
 			tF_Pais.setColumns(10);
 			tF_Pais.setBounds(228, 78, 184, 20);
 			panel.add(tF_Pais);
@@ -170,7 +174,7 @@ public class ModificarSuminstrador extends JDialog {
 			lblDatosDelSuministrador.setBounds(10, 14, 174, 14);
 			Panel.add(lblDatosDelSuministrador);
 		}
-		
+
 		panelComponentesSumi = new JPanel();
 		panelComponentesSumi.setVisible(true);
 		panelComponentesSumi.setLayout(null);
@@ -188,9 +192,18 @@ public class ModificarSuminstrador extends JDialog {
 				table.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
+
+						index = table.getSelectedRow();
+						if(index >=0 ) {
+							btnModificarSuministro.setEnabled(true);
+							btnEliminarSuministro.setEnabled(true);
+
+							String id = table.getValueAt(index, 0).toString();
+							componente = buscarComponenteEnSumiByID(id);
+						}
 					}
 				});
-				
+
 				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				scrollPane.setViewportView(table);
 
@@ -198,23 +211,38 @@ public class ModificarSuminstrador extends JDialog {
 				model.setColumnIdentifiers(headers);
 				table.setModel(model);
 			}
-			
+
 		}
-		
-		JButton btnModificarSuministro = new JButton("Modificar Suministro");
+
+		btnModificarSuministro = new JButton("Modificar Suministro");
 		btnModificarSuministro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				ModSuministro modSuministro = new ModSuministro(componente);
+				modSuministro.setModal(true);
+				modSuministro.setVisible(true);
 			}
 		});
 		btnModificarSuministro.setActionCommand("OK");
 		btnModificarSuministro.setBounds(10, 400, 134, 23);
 		Panel.add(btnModificarSuministro);
-		
-		JButton btnEliminarSuministro = new JButton("Eliminar Suministro");
+
+		btnEliminarSuministro = new JButton("Eliminar Suministro");
+		btnEliminarSuministro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar el suministro: ", "Eliminar Suministro", JOptionPane.OK_CANCEL_OPTION);
+				if(option == JOptionPane.OK_OPTION){
+					
+					suministrador.getComponentes().remove(index);
+					loadComp(0);
+					//btnEliminar.setEnabled(false);
+				}
+			}
+		});
 		btnEliminarSuministro.setActionCommand("OK");
 		btnEliminarSuministro.setBounds(154, 400, 134, 23);
 		Panel.add(btnEliminarSuministro);
-		
+
 		JButton btnAgregarSuministro = new JButton("Agregar Suministro");
 		btnAgregarSuministro.setActionCommand("OK");
 		btnAgregarSuministro.setBounds(298, 400, 134, 23);
@@ -227,6 +255,14 @@ public class ModificarSuminstrador extends JDialog {
 				JButton ModificarButton = new JButton("Modificar");
 				ModificarButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						suministrador.setId(tF_Id.getText());
+						suministrador.setNombre(tF_Nombre.getText());
+						suministrador.setPais(tF_Pais.getText());
+
+						Tienda.getInstance().modificarSuministrador(suministrador);
+						VerSuministradores.loadSuministradores(0);
+						JOptionPane.showMessageDialog(null, "Suministrador Modificado", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+						dispose();
 					}
 
 				});
@@ -246,9 +282,9 @@ public class ModificarSuminstrador extends JDialog {
 			}
 			loadComp(0);
 		}
-		
+
 	}
-	
+
 	private void loadComp(int index) {
 
 		model.setRowCount(0);
@@ -262,5 +298,19 @@ public class ModificarSuminstrador extends JDialog {
 				model.addRow(rows);
 			}
 		}
+	}
+
+	private Componente buscarComponenteEnSumiByID(String id) {
+
+		Componente comABus = null;
+
+		for (Componente aux : suministrador.getComponentes()) {
+
+			if(aux.getId().equals(id)) {
+				comABus = aux;
+				return comABus;
+			}
+		}
+		return null;
 	}
 }

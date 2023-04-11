@@ -346,6 +346,22 @@ public class Tienda implements Serializable{
 		int index = buscarIndexOfClienteByCedula(selected.getCedula());
 		clientes.set(index,selected);
 	}
+	
+	public void modificarSuministrador(Suministrador selected) {
+		int index = buscarIndexOfSuministradorById(selected.getId());
+		suministradores.set(index,selected);
+	}
+	
+	private int buscarIndexOfSuministradorById(String id) {
+		int ind = 0;
+		for (Suministrador s: suministradores) {
+			if (s.getId().equalsIgnoreCase(id)) {
+				return ind;
+			}
+			ind++;
+		}
+		return -1;
+	}
 
 	private int buscarIndexOfClienteByCedula(String cedula) {
 		int ind = 0;
